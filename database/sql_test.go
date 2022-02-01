@@ -110,6 +110,8 @@ func TestQuerySQLParameter(t *testing.T) {
 	}
 }
 
+// TestPrepareStatement including PrepareStatement that can be used when we want to insert or query
+// multiple data at one time. So, the Exec or Query don't have to get data pool everytime.
 func TestPrepareStatement(t *testing.T) {
 	db := GetConnection()
 	defer db.Close()
