@@ -80,3 +80,31 @@ func TestQuerySqlComplex(t *testing.T){
 		log.Println("Married : ", married)
 	}
 }
+
+func TestQuerySQLParameter(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	username := "admin"
+	password := "salah"
+
+	queryData := "SELECT username FROM user WHERE username = ? AND password = ? LIMIT 1"
+
+	rows, err := db.QueryContext(ctx, queryData, username, password)
+
+	if err != nil {
+		panic(err)
+	}
+	if rows.Next(){
+		var username string
+		err := rows.Scan(&username)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Sukses Login", username)
+	} else {
+		fmt.Println("Gagal Login")
+	}
+}
