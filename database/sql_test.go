@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -107,4 +108,35 @@ func TestQuerySQLParameter(t *testing.T) {
 	} else {
 		fmt.Println("Gagal Login")
 	}
+}
+
+func TestPrepareStatement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	insertData := "INSERT INTO comments(email, comments) VALUES(?, ?)"
+
+	statement, err := db.PrepareContext(ctx, insertData)
+	defer statement.Close()
+
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < 10; i++{
+		email := "devo" + strconv.Itoa(i) + "@gmail.com"
+		comment := "Ini komen ke" + strconv.Itoa(i)
+
+		res, err := statement.ExecContext(ctx, email, comment)
+		if err != nil {
+			panic(err)
+		}
+		id, err := res.LastInsertId()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Sukses masukkan komen dengan ID : ", id)
+	}
+
 }
