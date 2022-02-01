@@ -44,3 +44,15 @@ CREATE TABLE user
 SELECT * FROM user;
 
 INSERT INTO user(username, password) VALUES('admin', 'salah');
+
+CREATE TABLE comments
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    email VARCHAR(100) NOT NULL,
+    comments TEXT,
+    PRIMARY KEY (id)
+) ENGINE InnoDB;
+
+DESC comments;
+
+SELECT * FROM comments;
