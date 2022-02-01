@@ -28,5 +28,19 @@ ALTER TABLE customer
 INSERT INTO customer(id, name, email, balance, rating, birth_date, married)
 VALUES('devo', 'Devo', 'pundadevo21@gmail.com', 2500000, 90.0, '2002-05-25', false),
        ('reza', 'Reza', 'rezap@gmail.com', 5000000, 86.0, '1998-06-20', false),
-       ('vio', 'vio', 'vio22@gmail.com', 100000, 82.6, '2005-07-12', false)
+       ('vio', 'vio', 'vio22@gmail.com', 100000, 82.6, '2005-07-12', false);
 
+UPDATE customer
+SET email = 'devo2@gmail.com'
+WHERE id = 'devo';
+
+CREATE TABLE user
+(
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY(username)
+)ENGINE = InnoDB;
+
+SELECT * FROM user;
+
+INSERT INTO user(username, password) VALUES('admin', 'salah');
