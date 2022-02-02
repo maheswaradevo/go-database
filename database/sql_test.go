@@ -47,6 +47,7 @@ func TestQuerySql(t *testing.T) {
 	defer rows.Close()
 }
 
+//TestQuerySqlComplex -> this function including more complex query using QueryContext
 func TestQuerySqlComplex(t *testing.T){
 	db := GetConnection()
 	defer db.Close()
@@ -82,6 +83,8 @@ func TestQuerySqlComplex(t *testing.T){
 	}
 }
 
+//TestQuerySQLParameter is using a parameter compared with using 
+//an string concate
 func TestQuerySQLParameter(t *testing.T) {
 	db := GetConnection()
 	defer db.Close()
