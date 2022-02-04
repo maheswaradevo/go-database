@@ -145,3 +145,43 @@ func TestPrepareStatement(t *testing.T) {
 	}
 
 }
+
+//TestQueryDatabaseTransactional -> Database Transaction used when we want to cancel
+//all the query that have already made. Example, when a transaction with bank account
+//when network user A is down, so the transaction will error in the middle of process
+//if we don't use the Database Transactional Method, the query before the process that error
+//will be executed already. So, this will make bank account balance User A doesn't match
+//with the data that error
+func TestQueryDatabaseTransactional(t *testing.T){
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	tx, err := db.Begin()
+	if err != nil {
+		panic(err)
+	}
+
+	script := "INSERT INTO comments(email, comments) VALUES(?, ?)"
+	//Do transaction
+	for i := 0; i < 10; i++{
+		email := "devo" + strconv.Itoa(i) + "@gmail.com"
+		comment := "Ini komen ke" + strconv.Itoa(i)
+
+		res, err := tx.ExecContext(ctx, script, email, comment)
+		if err != nil {
+			panic(err)
+		}
+		id, err := res.LastInsertId()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Sukses masukkan komen dengan ID : ", id)
+	}
+
+	err = tx.Rollback()
+	if err != nil{
+		panic(err)
+	}
+}
